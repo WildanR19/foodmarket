@@ -33,7 +33,7 @@ class UserController extends Controller
 
             // cek apakah hash sesuai
             $user = User::where('email', $request->email)->first();
-            if (!Hash::check($request->pasword, $user->password, [])) {
+            if (!Hash::check($request->password, $user->password, [])) {
                 throw new \Exception('Invalid Credentials');
             }
 
@@ -46,7 +46,7 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return ResponseFormatter::error([
                 'message' => 'Something went wrong.',
-                'error' => $e
+                'error' => $e->getMessage()
             ], 'Authentication Failed', 500);
         }
     }
@@ -81,7 +81,7 @@ class UserController extends Controller
         } catch (\Exception $error) {
             return ResponseFormatter::error([
                 'message' => 'Something went wrong.',
-                'error' => $error
+                'error' => $error->getMessage()
             ], 'Authentication Failed', 500);
         }
     }
@@ -95,7 +95,14 @@ class UserController extends Controller
 
     public function fetch(Request $request)
     {
-        return ResponseFormatter::success($request->user(), 'Data user berhasil diambil');
+        try {
+            return ResponseFormatter::success($request->user(), 'Data user berhasil diambil');
+        } catch (\Exception $e) {
+            return ResponseFormatter::error([
+                'message' => 'Fetching data failed',
+                'error' => $e->getMessage()
+            ], 'Failed');
+        }
     }
 
     public function updateProfile(Request $request)
@@ -120,7 +127,7 @@ class UserController extends Controller
         }
 
         if ($request->file('file')) {
-            $file = $request->file()->store('assets/user', 'public');
+            $file = $request->file->store('assets/user', 'public');
 
             $user = Auth::user();
             $user->profile_photo_path = $file;
