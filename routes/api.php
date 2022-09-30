@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\MidtransController;
+use App\Http\Controllers\API\TransactionController;
 use App\Http\Controllers\API\UserController;
-use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*

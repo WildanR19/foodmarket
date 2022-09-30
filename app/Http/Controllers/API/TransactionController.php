@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Helpers\ResponseFormatter;
+use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -94,11 +95,11 @@ class TransactionController extends Controller
             ],
             'enabled_payments' => ['gopay', 'bank_transfer'],
             'vtweb' => []
-        ]; 
+        ];
 
         // memanggil midtrans
         try {
-            // ambil halaman payment midtrans 
+            // ambil halaman payment midtrans
             $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
             $transaction->payment_url = $paymentUrl;
             $transaction->save();

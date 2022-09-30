@@ -39,14 +39,12 @@ class UserController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit(User $user)
     {
-        $user = User::findOrFail($id);
-
         return view('users.edit', ['user' => $user]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
 
         $request->validate([
@@ -55,16 +53,15 @@ class UserController extends Controller
         ]);
 
         $data = $request->all();
-        $user = User::findOrFail($id);
         $user->update($data);
 
         return redirect()->route('users.index');
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        User::destroy($id);
+        $user->delete();
 
-        return redirect()->route('users.index');
+        return back();
     }
 }
