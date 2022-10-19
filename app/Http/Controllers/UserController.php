@@ -27,11 +27,13 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $data = $request->all();
-        $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
+        if ($request->file('profile_photo_path')) {
+            $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
+        }
         $data['password'] = Hash::make($request->password);
 
         User::create($data);
-        return redirect()->route('users.index', ['message' => 'Success']);
+        return redirect()->route('users.index');
     }
 
     public function show($id)
@@ -46,13 +48,15 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-
         $request->validate([
             'name' => ['string', 'required', 'max:255'],
-            'email' => ['string', 'required', 'max:255', 'email', 'unique:users']
+            'email' => ['string', 'required', 'max:255', 'email', 'unique:users,email,'.$user->id]
         ]);
 
         $data = $request->all();
+        if ($request->file('profile_photo_path')) {
+            $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
+        }
         $user->update($data);
 
         return redirect()->route('users.index');

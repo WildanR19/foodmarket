@@ -34,6 +34,7 @@ class UserRequest extends FormRequest
             'phoneNumber' => ['string', 'required', 'max:255'],
             'city' => ['string', 'required', 'max:255'],
             'roles' => ['string', 'required', 'in:USER,ADMIN'],
+            'profile_photo_path' => ['image','max:2048']
         ];
     }
 }

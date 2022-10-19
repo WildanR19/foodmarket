@@ -7,11 +7,26 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        @if ($errors->any())
+            <div class="mb-5" role="alert">
+                <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                    There's something wrong!
+                </div>
+                <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                    <p>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    </p>
+                </div>
+            </div>
+        @endif
             <div class="mt-10 sm:mt-0">
                 <div class="md:grid md:grid-cols-3 md:gap-6">
-
                     <div class="mt-5 md:col-span-2 md:m t-0">
-                        <form action="{{route('users.update', $user->id)}}" method="post">
+                        <form action="{{route('users.update', $user->id)}}" method="post" enctype="multipart/form-data">
                             {!! method_field('put') . csrf_field() !!}
                             <div class="overflow-hidden shadow sm:rounded-md">
                                 <div class="bg-white px-4 py-5 sm:p-6">
@@ -21,16 +36,9 @@
                                             <input type="text" name="name" id="name" autocomplete="given-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" value="{{$user->name}}">
                                         </div>
 
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">Photo</label>
-                                            <div class="mt-1 flex items-center">
-                                                <span class="inline-block h-12 w-12 overflow-hidden rounded-full bg-gray-100">
-                                                  <svg class="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                                  </svg>
-                                                </span>
-                                                <button type="button" class="ml-5 rounded-md border border-gray-300 bg-white py-2 px-3 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Change</button>
-                                            </div>
+                                        <div class="col-span-6 sm:col-span-4">
+                                            <label for="profile_photo_path" class="block text-sm font-medium text-gray-700">Photo</label>
+                                            <input name="profile_photo_path" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" id="profile_photo_path" type="file" placeholder="User Image">
                                         </div>
 
                                         <div class="col-span-6 sm:col-span-4">
